@@ -15,6 +15,7 @@ pub async fn main() {
     println!("2. Submitting {N} requests...\n");
     let mut handles = JoinSet::new();
     let client = reqwest::Client::new();
+    let _ = client.get("https://rust-lang.org").send().await;
     for _ in 0..N {
         handles.spawn(client.get("https://rust-lang.org").send());
     }
