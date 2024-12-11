@@ -11,30 +11,33 @@ pub async fn main() {
     let m = Handle::current().metrics();
     print_tokio_metrics(&m);
 
-    const N: usize = 20;
-    println!("2. Submitting {N} requests...\n");
-    let mut handles = JoinSet::new();
+    println!("2. Metrics after submitting one request:");
     let client = reqwest::Client::new();
     let _ = client.get("https://rust-lang.org").send().await;
+    print_tokio_metrics(&m);
+
+    const N: usize = 20;
+    println!("3. Submitting {N} requests...\n");
+    let mut handles = JoinSet::new();
     for _ in 0..N {
         handles.spawn(client.get("https://rust-lang.org").send());
     }
 
-    println!("3. Metrics just after submitting all requests:");
+    println!("4. Metrics just after submitting all requests:");
     print_tokio_metrics(&m);
 
-    println!("4. Waiting for all requests to complete...\n");
+    println!("5. Waiting for all requests to complete...\n");
 
     handles.join_all().await;
-    println!("5. Finished receiving all {N} requests!\n");
+    println!("6. Finished receiving all {N} requests!\n");
 
-    println!("6. Metrics just after receiving all requests:");
+    println!("7. Metrics just after receiving all requests:");
     print_tokio_metrics(&m);
 
-    println!("7. Waiting 10 seconds for blocking threads to be dropped...\n");
+    println!("8. Waiting 10 seconds for blocking threads to be dropped...\n");
 
     tokio::time::sleep(Duration::from_secs(10)).await;
-    println!("8. Metrics 10 seconds after receiving all requests:");
+    println!("9. Metrics 10 seconds after receiving all requests:");
     print_tokio_metrics(&m);
 }
 
