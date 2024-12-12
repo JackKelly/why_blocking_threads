@@ -5,8 +5,7 @@ use tokio::{
     task::JoinSet,
 };
 
-const URL: &str = "https://register.onboard.eurostar.com";
-// const URL: &str = "10.22.8.2";
+const URL: &str = "https://rust-lang.org";
 
 #[tokio::main]
 pub async fn main() {
