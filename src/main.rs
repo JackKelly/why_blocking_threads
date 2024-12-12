@@ -5,6 +5,9 @@ use tokio::{
     task::JoinSet,
 };
 
+const URL: &str = "https://register.onboard.eurostar.com";
+// const URL: &str = "10.22.8.2";
+
 #[tokio::main]
 pub async fn main() {
     println!("1. Metrics before submitting any requests:");
@@ -13,14 +16,14 @@ pub async fn main() {
 
     println!("2. Metrics after submitting one request:");
     let client = reqwest::Client::new();
-    let _ = client.get("https://rust-lang.org").send().await;
+    let _ = client.get(URL).send().await;
     print_tokio_metrics(&m);
 
     const N: usize = 20;
     println!("3. Submitting {N} requests...\n");
     let mut handles = JoinSet::new();
     for _ in 0..N {
-        handles.spawn(client.get("https://rust-lang.org").send());
+        handles.spawn(client.get(URL).send());
     }
 
     println!("4. Metrics just after submitting all requests:");
